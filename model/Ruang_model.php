@@ -30,15 +30,24 @@ class Ruang_model extends CI_Model
     }
     
     // get total rows
-    function total_rows() {
+    function total_rows($id_kampus=null) {
+
+
         $this->db->from($this->table);
+        if (!empty($id_kampus)) {
+            $this->db->where('id_kampus', $id_kampus);
+        }
         return $this->db->count_all_results();
     }
 
     // get data with limit
-    function index_limit($limit, $start = 0) {
+    function index_limit($limit, $start = 0, $id_kampus=null) {
+        if (!empty($id_kampus)) {
+            $this->db->where('id_kampus', $id_kampus);
+        }
         $this->db->order_by($this->id, $this->order);
         $this->db->limit($limit, $start);
+
         return $this->db->get($this->table)->result();
     }
     
