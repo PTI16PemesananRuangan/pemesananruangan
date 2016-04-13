@@ -10,6 +10,7 @@ class Pemesanan_model extends CI_Model
     public $id = 'id';
     public $order = 'DESC';
 
+
     function __construct()
     {
         parent::__construct();
@@ -27,6 +28,19 @@ class Pemesanan_model extends CI_Model
                         ->result();
 
 
+        return $return;
+    }
+    function get_all_byruang($id)
+    {
+        $this->db->order_by('p.'.$this->id, $this->order);
+        $return =  $this->db->select('p.*, u.name as pemesan, r.nama as ruang')
+                        ->from('pemesanan p')
+                        ->join('users u','p.id_member=u.id')
+                        ->join('ruangan r', 'r.id=p.id_ruangan')
+                        ->where('p.id_ruangan',$id)
+                        ->where('p.status',1)
+                        ->get()
+                        ->result();
         return $return;
     }
 
@@ -52,11 +66,18 @@ class Pemesanan_model extends CI_Model
     }
 
     // get data with limit
-    function index_limit($limit, $start = 0) {
+    function index_limit($limit, $start = 0, $kolom, $type=null) {
+
+        if ($type==null) {
+            $type = 'asc';
+        }
 
         $this->db->limit($limit, $start);
+        if ($kolom==null) 
+            $this->db->order_by('p.'.$this->id, $this->order);
+        else
+             $this->db->order_by($kolom, $type);
 
-        $this->db->order_by('p.'.$this->id, $this->order);
         $return =  $this->db->select('p.*, u.name as pemesan, r.nama as ruang')
                         ->from('pemesanan p')
                         ->join('users u','p.id_member=u.id')
@@ -68,38 +89,48 @@ class Pemesanan_model extends CI_Model
     }
     
     // get search total rows
-    function search_total_rows($keyword = NULL) {
-        $this->db->like('id', $keyword);
-	$this->db->or_like('id_member', $keyword);
-	$this->db->or_like('id_ruangan', $keyword);
-	$this->db->or_like('tanggal_mulai', $keyword);
-	$this->db->or_like('tanggal_selesai', $keyword);
-	$this->db->or_like('jam_mulai', $keyword);
-	$this->db->or_like('jam_selesai', $keyword);
-	$this->db->or_like('acara', $keyword);
-	$this->db->or_like('ketua_acara', $keyword);
-	$this->db->or_like('jumlah_peserta', $keyword);
-	$this->db->or_like('status', $keyword);
-	$this->db->from($this->table);
-        return $this->db->count_all_results();
+    function search_total_rows($keyword = NULL, $kolom= null) {
+     
+        $this->db->like($kolom,$keyword); 
+       
+        $return =  $this->db->select('p.*, u.name as pemesan, r.nama as ruang')
+                        ->from('pemesanan p')
+                        ->join('users u','p.id_member=u.id')
+                        ->join('ruangan r', 'r.id=p.id_ruangan')
+                        ->count_all_results();
+        return $return;
     }
 
     // get search data with limit
-    function search_index_limit($limit, $start = 0, $keyword = NULL) {
-        $this->db->order_by($this->id, $this->order);
-        $this->db->like('id', $keyword);
-	$this->db->or_like('id_member', $keyword);
-	$this->db->or_like('id_ruangan', $keyword);
-	$this->db->or_like('tanggal_mulai', $keyword);
-	$this->db->or_like('tanggal_selesai', $keyword);
-	$this->db->or_like('jam_mulai', $keyword);
-	$this->db->or_like('jam_selesai', $keyword);
-	$this->db->or_like('acara', $keyword);
-	$this->db->or_like('ketua_acara', $keyword);
-	$this->db->or_like('jumlah_peserta', $keyword);
-	$this->db->or_like('status', $keyword);
-	$this->db->limit($limit, $start);
-        return $this->db->get($this->table)->result();
+    function search_index_limit($limit, $start = 0, $keyword = NULL, $kolom= null) {
+        $this->db->order_by('p.'.$this->id, $this->order);
+        $this->db->like($kolom,$keyword);
+        //$this->db->like('id', $keyword);
+    	// $this->db->or_like('u.name', $keyword);
+    	// $this->db->or_like('r.nama', $keyword);
+    	// $this->db->or_like('tanggal_mulai', $keyword);
+    	// $this->db->or_like('tanggal_selesai', $keyword);
+    	// $this->db->or_like('jam_mulai', $keyword);
+    	// $this->db->or_like('jam_selesai', $keyword);
+    	// $this->db->or_like('acara', $keyword);
+    	// $this->db->or_like('ketua_acara', $keyword);
+    	// $this->db->or_like('jumlah_peserta', $keyword);
+    	// $this->db->or_like('status', $keyword);
+
+
+    	$this->db->limit($limit, $start);
+
+
+        $return =  $this->db->select('p.*, u.name as pemesan, r.nama as ruang')
+                        ->from('pemesanan p')
+                        ->join('users u','p.id_member=u.id')
+                        ->join('ruangan r', 'r.id=p.id_ruangan')
+                        ->get()
+                        ->result();
+
+        return $return;
+
+        // return $this->db->get($this->table)->result();
     }
 
     // insert data
