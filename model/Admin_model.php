@@ -85,6 +85,21 @@ class Admin_model extends CI_Model
         $this->db->delete($this->table);
     }
 
+
+      function login($username, $password){
+        $return = $this->db->select('id')
+                  ->from('admin')
+                  ->where('username',$username)
+                  ->where('password',$password)
+                  ->get()
+                  ->row();
+        if ($return) {
+            return 1;
+        }else{
+            return 0;
+        }
+    }   
+
 }
 
 /* End of file Users_model.php */
