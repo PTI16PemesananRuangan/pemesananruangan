@@ -82,6 +82,19 @@ class Users_model extends CI_Model
         $this->db->where($this->id, $id);
         $this->db->delete($this->table);
     }
+    function login($username, $password){
+        $return = $this->db->select('id')
+                  ->from('users')
+                  ->where('username',$username)
+                  ->where('password',$password)
+                  ->get()
+                  ->row();
+        if ($return) {
+            return $return->id;
+        }else{
+            return 0;
+        }
+    }   
 
 }
 
