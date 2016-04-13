@@ -84,3 +84,4 @@ class Kampus_model extends CI_Model
 
 /* End of file Users_model.php */
 /* Location: ./application/models/Users_model.php */
+
