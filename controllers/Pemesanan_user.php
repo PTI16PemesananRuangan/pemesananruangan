@@ -157,6 +157,7 @@ class Pemesanan_user extends user_controller
 		'id_ruangan' => $row->id_ruangan,
 		'tanggal_mulai' => date_formater($row->tanggal_mulai),
 		'tanggal_selesai' => date_formater( $row->tanggal_selesai),
+        'tanggal_pesan' => $row->tanggal_pesan!='0000-00-00' and $row->tanggal_pesan!=null  ?  date_formater( $row->tanggal_pesan) : '',
 		'jam_mulai' => $row->jam_mulai,
 		'jam_selesai' => $row->jam_selesai,
 		'acara' => $row->acara,
