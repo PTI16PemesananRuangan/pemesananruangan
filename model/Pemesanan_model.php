@@ -30,7 +30,7 @@ class Pemesanan_model extends CI_Model
 
         return $return;
     }
-    function get_all_byruang($id)//pencarian data berdasarkan ruang
+    function get_all_byruang($id)
     {
         $this->db->order_by('p.'.$this->id, $this->order);
         $return =  $this->db->select('p.*, u.name as pemesan, r.nama as ruang')
@@ -45,7 +45,7 @@ class Pemesanan_model extends CI_Model
     }
 
     // get data by id
-    function get_by_id($id)//pencarian data berdasarkan id
+    function get_by_id($id)
     {
         $this->db->where('p.'.$this->id, $id);
          $return =  $this->db->select('p.*, u.name as pemesan, r.nama as ruang')
