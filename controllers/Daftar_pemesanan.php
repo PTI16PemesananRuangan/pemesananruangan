@@ -144,6 +144,8 @@ class Daftar_pemesanan extends My_Controller
     public function read($id) 
     {
         $row = $this->pemesanan_model->get_by_id($id);
+
+
         if ($row) {
             $this->data = array(
 		'id' => $row->id,
@@ -160,9 +162,11 @@ class Daftar_pemesanan extends My_Controller
 		'ketua_acara' => $row->ketua_acara,
 		'jumlah_peserta' => $row->jumlah_peserta,
 		'status' => $row->status,
-	    );
+        'tanggal_pesan' => ($row->tanggal_pesan!='0000-00-00' and $row->tanggal_pesan!=null)  ?  date_formater( $row->tanggal_pesan) : '',
+	       
+        );
            // $this->load->view('pemesanan_read', $data);
-               $this->content = 'admin/daftar_pemesanan/pemesanan_read';
+        $this->content = 'admin/daftar_pemesanan/pemesanan_read';
         $this->layout();
 
         } else {
@@ -297,19 +301,18 @@ class Daftar_pemesanan extends My_Controller
 
     public function _rules() 
     {
-	$this->form_validation->set_rules('id_member', ' ', 'trim|required|numeric');
-	$this->form_validation->set_rules('id_ruangan', ' ', 'trim|required|numeric');
-	$this->form_validation->set_rules('tanggal_mulai', ' ', 'trim|required');
-	$this->form_validation->set_rules('tanggal_selesai', ' ', 'trim|required');
-	$this->form_validation->set_rules('jam_mulai', ' ', 'trim|required');
-	$this->form_validation->set_rules('jam_selesai', ' ', 'trim|required');
-	$this->form_validation->set_rules('acara', ' ', 'trim|required');
-	$this->form_validation->set_rules('ketua_acara', ' ', 'trim|required');
-	$this->form_validation->set_rules('jumlah_peserta', ' ', 'trim|required|numeric');
-	$this->form_validation->set_rules('status', ' ', 'trim|required|numeric');
-
-	$this->form_validation->set_rules('id', 'id', 'trim');
-	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
+    	$this->form_validation->set_rules('id_member', ' ', 'trim|required|numeric');
+    	$this->form_validation->set_rules('id_ruangan', ' ', 'trim|required|numeric');
+    	$this->form_validation->set_rules('tanggal_mulai', ' ', 'trim|required');
+    	$this->form_validation->set_rules('tanggal_selesai', ' ', 'trim|required');
+    	$this->form_validation->set_rules('jam_mulai', ' ', 'trim|required');
+    	$this->form_validation->set_rules('jam_selesai', ' ', 'trim|required');
+    	$this->form_validation->set_rules('acara', ' ', 'trim|required');
+    	$this->form_validation->set_rules('ketua_acara', ' ', 'trim|required');
+    	$this->form_validation->set_rules('jumlah_peserta', ' ', 'trim|required|numeric');
+    	$this->form_validation->set_rules('status', ' ', 'trim|required|numeric');
+    	$this->form_validation->set_rules('id', 'id', 'trim');
+    	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
 
     public function excel()
@@ -335,17 +338,18 @@ class Daftar_pemesanan extends My_Controller
         xlsWriteLabel(0, 0, $judul);
 
         $kolomhead = 0;
-        xlsWriteLabel($tablehead, $kolomhead++, "no");
-	xlsWriteLabel($tablehead, $kolomhead++, "id_member");
-	xlsWriteLabel($tablehead, $kolomhead++, "id_ruangan");
-	xlsWriteLabel($tablehead, $kolomhead++, "tanggal_mulai");
-	xlsWriteLabel($tablehead, $kolomhead++, "tanggal_selesai");
-	xlsWriteLabel($tablehead, $kolomhead++, "jam_mulai");
-	xlsWriteLabel($tablehead, $kolomhead++, "jam_selesai");
-	xlsWriteLabel($tablehead, $kolomhead++, "acara");
-	xlsWriteLabel($tablehead, $kolomhead++, "ketua_acara");
-	xlsWriteLabel($tablehead, $kolomhead++, "jumlah_peserta");
-	xlsWriteLabel($tablehead, $kolomhead++, "status");
+            xlsWriteLabel($tablehead, $kolomhead++, "no");
+        	xlsWriteLabel($tablehead, $kolomhead++, "id_member");
+        	xlsWriteLabel($tablehead, $kolomhead++, "id_ruangan");
+        	xlsWriteLabel($tablehead, $kolomhead++, "tanggal_mulai");
+        	xlsWriteLabel($tablehead, $kolomhead++, "tanggal_selesai");
+        	xlsWriteLabel($tablehead, $kolomhead++, "jam_mulai");
+        	xlsWriteLabel($tablehead, $kolomhead++, "jam_selesai");
+        	xlsWriteLabel($tablehead, $kolomhead++, "acara");
+        	xlsWriteLabel($tablehead, $kolomhead++, "ketua_acara");
+        	xlsWriteLabel($tablehead, $kolomhead++, "jumlah_peserta");
+            xlsWriteLabel($tablehead, $kolomhead++, "tanggal_pesan");
+        	xlsWriteLabel($tablehead, $kolomhead++, "status");
 
 	foreach ($this->pemesanan_model->get_all() as $data) {
             $kolombody = 0;
@@ -361,6 +365,7 @@ class Daftar_pemesanan extends My_Controller
 	    xlsWriteLabel($tablebody, $kolombody++, $data->acara);
 	    xlsWriteLabel($tablebody, $kolombody++, $data->ketua_acara);
 	    xlsWriteNumber($tablebody, $kolombody++, $data->jumlah_peserta);
+        xlsWriteNumber($tablebody, $kolombody++, $data->tanggal_pesan);
 	    xlsWriteNumber($tablebody, $kolombody++, $data->status);
 
 	    $tablebody++;
