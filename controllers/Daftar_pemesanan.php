@@ -319,7 +319,7 @@ class Daftar_pemesanan extends My_Controller
     {
         $this->load->helper('exportexcel');
         $namaFile = "pemesanan.xls";
-        $judul = "pemesanan";
+        $judul = "pemesananan pemakaian ruangan Universitas Sanata Dharma";
         $tablehead = 2;
         $tablebody = 3;
         $nourut = 1;
@@ -356,17 +356,17 @@ class Daftar_pemesanan extends My_Controller
 
             //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
             xlsWriteNumber($tablebody, $kolombody++, $nourut);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->id_member);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->id_ruangan);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->tanggal_mulai);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->tanggal_selesai);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->jam_mulai);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->jam_selesai);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->acara);
-	    xlsWriteLabel($tablebody, $kolombody++, $data->ketua_acara);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->jumlah_peserta);
-        xlsWriteNumber($tablebody, $kolombody++, $data->tanggal_pesan);
-	    xlsWriteNumber($tablebody, $kolombody++, $data->status);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->id_member);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->id_ruangan);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->tanggal_mulai);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->tanggal_selesai);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->jam_mulai);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->jam_selesai);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->acara);
+    	    xlsWriteLabel($tablebody, $kolombody++, $data->ketua_acara);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->jumlah_peserta);
+            xlsWriteLabel($tablebody, $kolombody++, $data->tanggal_pesan);
+    	    xlsWriteNumber($tablebody, $kolombody++, $data->status);
 
 	    $tablebody++;
             $nourut++;
