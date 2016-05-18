@@ -314,68 +314,6 @@ class Daftar_pemesanan extends My_Controller
     	$this->form_validation->set_rules('id', 'id', 'trim');
     	$this->form_validation->set_error_delimiters('<span class="text-danger">', '</span>');
     }
-
-    public function excel()
-    {
-        $this->load->helper('exportexcel');
-        $namaFile = "pemesanan.xls";
-        $judul = "pemesananan pemakaian ruangan Universitas Sanata Dharma";
-        $tablehead = 2;
-        $tablebody = 3;
-        $nourut = 1;
-        //penulisan header
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control: must-revalidate, post-check=0,pre-check=0");
-        header("Content-Type: application/force-download");
-        header("Content-Type: application/octet-stream");
-        header("Content-Type: application/download");
-        header("Content-Disposition: attachment;filename=" . $namaFile . "");
-        header("Content-Transfer-Encoding: binary ");
-
-        xlsBOF();
-
-        xlsWriteLabel(0, 0, $judul);
-
-        $kolomhead = 0;
-            xlsWriteLabel($tablehead, $kolomhead++, "no");
-        	xlsWriteLabel($tablehead, $kolomhead++, "id_member");
-        	xlsWriteLabel($tablehead, $kolomhead++, "id_ruangan");
-        	xlsWriteLabel($tablehead, $kolomhead++, "tanggal_mulai");
-        	xlsWriteLabel($tablehead, $kolomhead++, "tanggal_selesai");
-        	xlsWriteLabel($tablehead, $kolomhead++, "jam_mulai");
-        	xlsWriteLabel($tablehead, $kolomhead++, "jam_selesai");
-        	xlsWriteLabel($tablehead, $kolomhead++, "acara");
-        	xlsWriteLabel($tablehead, $kolomhead++, "ketua_acara");
-        	xlsWriteLabel($tablehead, $kolomhead++, "jumlah_peserta");
-            xlsWriteLabel($tablehead, $kolomhead++, "tanggal_pesan");
-        	xlsWriteLabel($tablehead, $kolomhead++, "status");
-
-	foreach ($this->pemesanan_model->get_all() as $data) {
-            $kolombody = 0;
-
-            //ubah xlsWriteLabel menjadi xlsWriteNumber untuk kolom numeric
-            xlsWriteNumber($tablebody, $kolombody++, $nourut);
-    	    xlsWriteNumber($tablebody, $kolombody++, $data->id_member);
-    	    xlsWriteNumber($tablebody, $kolombody++, $data->id_ruangan);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->tanggal_mulai);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->tanggal_selesai);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->jam_mulai);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->jam_selesai);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->acara);
-    	    xlsWriteLabel($tablebody, $kolombody++, $data->ketua_acara);
-    	    xlsWriteNumber($tablebody, $kolombody++, $data->jumlah_peserta);
-            xlsWriteLabel($tablebody, $kolombody++, $data->tanggal_pesan);
-    	    xlsWriteNumber($tablebody, $kolombody++, $data->status);
-
-	    $tablebody++;
-            $nourut++;
-        }
-
-        xlsEOF();
-        exit();
-    }
-
 };
 
 /* End of file Daftar_pemesanan.php */
